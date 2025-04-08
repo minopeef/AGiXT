@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agixt-api
+  namespace: agixt
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: agixt-api
+  template:
+    metadata:
+      labels:
+        app: agixt-api
+    spec:
+      containers:
+      - name: agixt-api
+        image: joshxt/agixt:latest
+        ports:
+        - containerPort: 7437
+        envFrom:
+        - configMapRef:
+            name: agixt-config
+        - secretRef:
+            name: agixt-secrets
+        volumeMounts:
+        - name: workspace
+          mountPath: /agixt/WORKSPACE
+        - name: models
+          mountPath: /agixt/models
+      volumes:
+      - name: workspace
+        persistentVolumeClaim:
+          claimName: agixt-workspace
+      - name: models
+        persistentVolumeClaim:
+          claimName: agixt-models
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agixt-api
+  namespace: agixt
+spec:
+  ports:
+  - port: 7437
+  selector:
+    app: agixt-api 

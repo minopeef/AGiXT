@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agixt-config
+  namespace: agixt
+data:
+  DATABASE_TYPE: "postgresql"
+  AGIXT_URI: "http://agixt-api:7437"
+  APP_URI: "http://agixt-interactive:3437"
+  WORKING_DIRECTORY: "/agixt/WORKSPACE"
+  STORAGE_BACKEND: "local"
+  STORAGE_CONTAINER: "agixt-workspace"
+  TOKENIZERS_PARALLELISM: "false"
+  LOG_LEVEL: "INFO"
+  SEED_DATA: "true"
+  GRAPHIQL: "true"
+  TZ: "America/New_York" 

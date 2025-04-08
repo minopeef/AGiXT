@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agixt-interactive
+  namespace: agixt
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: agixt-interactive
+  template:
+    metadata:
+      labels:
+        app: agixt-interactive
+    spec:
+      containers:
+      - name: agixt-interactive
+        image: joshxt/agixt-interactive:main
+        ports:
+        - containerPort: 3437
+        envFrom:
+        - configMapRef:
+            name: agixt-config
+        - secretRef:
+            name: agixt-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agixt-interactive
+  namespace: agixt
+spec:
+  ports:
+  - port: 3437
+  selector:
+    app: agixt-interactive 
